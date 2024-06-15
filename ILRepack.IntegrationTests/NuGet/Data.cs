@@ -10,7 +10,10 @@ namespace ILRepack.IntegrationTests.NuGet
     {
         private static string[] supportedFwks = { @"lib", @"lib/20", @"lib/net20", @"lib/net35", @"lib/net40", @"lib/net4", @"lib/net45" };
         private static readonly IEnumerable<Package> Packages_Win = new[] {
+#if NETFRAMEWORK
+            // This depends on System.Configuration.ConfigurationManager which isn't part of .NET Core default assemblies
             Package.From("MahApps.Metro", "1.1.2"),
+#endif
             // Bcl.Async references 4.5, so it only repacks on Windows when 4.5 is installed
             Package.From("Microsoft.Bcl.Async", "1.0.168"),
         };
@@ -44,11 +47,16 @@ namespace ILRepack.IntegrationTests.NuGet
         public static readonly IEnumerable<Platform> Platforms = Platform.From(
             Package.From("UnionArgParser", "0.8.7"),
             Package.From("FSharp.Core", "3.0.2")
-        ).WithFwks("net35", "net40").Concat(Platform.From(
+        ).WithFwks("net35", "net40")
+#if NETFRAMEWORK
+        // This depends on System.ServiceModel which isn't part of .NET Core default assemblies
+        .Concat(Platform.From(
             Package.From("MassTransit", "2.9.9"),
             Package.From("Magnum", "2.1.3"),
             Package.From("Newtonsoft.Json", "6.0.8")
-        ).WithFwks("net35", "net40")).Concat(new[]
+        ).WithFwks("net35", "net40"))
+#endif
+        .Concat(new[]
         {
             Platform.From(
                 Package.From("Microsoft.Bcl", "1.1.10")

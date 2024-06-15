@@ -126,6 +126,7 @@ namespace ILRepack.IntegrationTests.NuGet
             RepackPlatformIntoPrimary(platform, assemblyNames);
         }
 
+#if NETFRAMEWORK
         [Test]
         [Platform(Include = "win")]
         public void VerifiesMergedSignedAssemblyHasNoUnsignedFriend()
@@ -147,6 +148,7 @@ namespace ILRepack.IntegrationTests.NuGet
             var errors = PeverifyHelper.Peverify(tempDirectory, "test.dll").Do(Console.WriteLine).ToErrorCodes().ToEnumerable();
             Assert.IsFalse(errors.Contains(PeverifyHelper.META_E_CA_FRIENDS_SN_REQUIRED));
         }
+#endif
 
         [Test]
         [Platform(Include = "win")]

@@ -442,7 +442,9 @@ namespace ILRepacking
                 var symbolWriterProvider = anySymbolReader?.GetWriterProvider();
                 var parameters = new WriterParameters
                 {
+#if NETFRAMEWORK
                     StrongNameKeyPair = signingStep.KeyPair,
+#endif
                     WriteSymbols = Options.DebugInfo && symbolWriterProvider != null,
                     SymbolWriterProvider = symbolWriterProvider,
                     DeterministicMvid = true,

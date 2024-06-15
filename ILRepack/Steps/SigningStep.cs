@@ -28,7 +28,10 @@ namespace ILRepacking.Steps
         readonly IRepackContext _repackContext;
         readonly RepackOptions _repackOptions;
 
+
+#if NETFRAMEWORK
         public StrongNameKeyPair KeyPair { get; private set; }
+#endif
 
         public SigningStep(
             IRepackContext repackContext,
@@ -42,6 +45,7 @@ namespace ILRepacking.Steps
         {
             if (_repackOptions.KeyContainer != null || (_repackOptions.KeyFile != null && File.Exists(_repackOptions.KeyFile)))
             {
+#if NETFRAMEWORK
                 var snkp = default(StrongNameKeyPair);
                 var publicKey = default(byte[]);
                 if (_repackOptions.KeyContainer != null)
@@ -72,6 +76,9 @@ namespace ILRepacking.Steps
                     _repackContext.TargetAssemblyMainModule.Attributes |= ModuleAttributes.StrongNameSigned;
                     KeyPair = snkp;
                 }
+#else
+                throw new PlatformNotSupportedException("Strong-name signing is not supported on this platform.");
+#endif
             }
             else
             {

@@ -112,9 +112,16 @@ namespace ILRepack.Tests.Steps.ResourceProcessing
 
             var references = new Mono.Collections.Generic.Collection<AssemblyNameReference>
             {
+#if NETFRAMEWORK
                 AssemblyNameReference.Parse("WindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"),
                 AssemblyNameReference.Parse("PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"),
                 AssemblyNameReference.Parse("PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35")
+#else
+                AssemblyNameReference.Parse("PresentationCore, Version=8.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"),
+                AssemblyNameReference.Parse("PresentationFramework, Version=8.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"),
+                AssemblyNameReference.Parse("System.Windows.Controls.Ribbon, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"),
+                AssemblyNameReference.Parse("WindowsBase, Version=8.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35")
+#endif
             };
 
             return new BamlGenerator(logger ?? Mock.Of<ILogger>(), references, mainAssembly);

@@ -1,6 +1,7 @@
 using Confuser.Renamer.BAML;
 using Fasterflect;
 using NUnit.Framework.Constraints;
+using NUnit.Framework.Internal;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -39,6 +40,9 @@ namespace ILRepack.Tests.Utils
         {
             _expectedDocument = expectedDocument;
         }
+
+        public override string Description
+            => TestExecutionContext.CurrentContext?.CurrentValueFormatter(_expectedDocument);
 
         public override ConstraintResult ApplyTo<TActual>(TActual actual)
         {

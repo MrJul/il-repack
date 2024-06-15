@@ -1,3 +1,4 @@
+#if NETFRAMEWORK
 using System;
 using System.IO;
 using System.Linq;
@@ -40,3 +41,4 @@ namespace ILRepack.Tests.Steps.ResourceProcessing
         }
     }
 }
+#endif
